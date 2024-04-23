@@ -73,6 +73,7 @@
 #include "absl/container/flat_hash_set.h"
 #include "zetasql/base/check.h"
 #include "absl/log/die_if_null.h"
+#include "absl/log/log.h"
 #include "absl/random/distributions.h"
 #include "absl/strings/ascii.h"
 #include "absl/strings/match.h"
@@ -2020,6 +2021,9 @@ BuiltinScalarFunction::CreateCast(
     std::unique_ptr<ValueExpr> time_zone, const TypeModifiers& type_modifiers,
     bool return_null_on_error, ResolvedFunctionCallBase::ErrorMode error_mode,
     std::unique_ptr<ExtendedCompositeCastEvaluator> extended_cast_evaluator) {
+
+  ABSL_LOG(ERROR) << "my test - BuiltinScalarFunction::CreateCast - extended_cast_evaluator == null: " << (extended_cast_evaluator == nullptr);
+
   ZETASQL_ASSIGN_OR_RETURN(auto null_on_error_exp,
                    ConstExpr::Create(Value::Bool(return_null_on_error)));
 
@@ -5188,6 +5192,9 @@ absl::StatusOr<Value> CastFunction::Eval(
 
     time_zone = args[3].string_value();
   }
+
+  ABSL_LOG(ERROR) << "my test - extended_cast_evaluator_ == nullptr "
+                  << (extended_cast_evaluator_ == nullptr);
 
   absl::StatusOr<Value> status_or = internal::CastValueWithoutTypeValidation(
       v, context->GetDefaultTimeZone(),

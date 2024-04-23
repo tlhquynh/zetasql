@@ -57,6 +57,7 @@
 #include "absl/time/time.h"
 #include "zetasql/base/map_util.h"
 #include "zetasql/base/status_macros.h"
+#include "absl/log/log.h"
 
 namespace zetasql {
 
@@ -575,8 +576,11 @@ absl::StatusOr<Value> CastContext::CastValue(
   }
 
   if (from_value.type()->IsExtendedType() || to_type->IsExtendedType()) {
+    ABSL_LOG(ERROR) << "my test - CastValue - going to invoke CastWithExtendedType";
     return CastWithExtendedType(from_value, to_type);
   }
+
+  ABSL_LOG(ERROR) << "my test - CastValue - not extended value";
 
   // Special case: STRUCT are not generally castable to PROTO, but there is an
   // exception for two-field structs whose fields are castable to the fields
@@ -1431,6 +1435,7 @@ absl::StatusOr<Value> CastValueWithoutTypeValidation(
     const std::optional<std::string>& time_zone,
     const ExtendedCompositeCastEvaluator* extended_conversion_evaluator,
     bool canonicalize_zero) {
+  ABSL_LOG(ERROR) << "my test - entering CastValueWithoutTypeValidation";
   absl::TimeZone timezone = default_timezone;
   if (time_zone.has_value()) {
     ZETASQL_RETURN_IF_ERROR(functions::MakeTimeZone(time_zone.value(), &timezone));

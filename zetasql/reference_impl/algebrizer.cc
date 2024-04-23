@@ -80,6 +80,7 @@
 #include "absl/algorithm/container.h"
 #include "absl/container/flat_hash_map.h"
 #include "absl/container/flat_hash_set.h"
+#include "absl/log/log.h"
 #include "zetasql/base/check.h"
 #include "absl/status/status.h"
 #include "absl/status/statusor.h"
@@ -134,6 +135,7 @@ absl::Status CheckHints(
 
 std::unique_ptr<ExtendedCompositeCastEvaluator>
 GetExtendedCastEvaluatorFromResolvedCast(const ResolvedCast* cast) {
+  ABSL_LOG(ERROR) << "my test - GetExtendedCastEvaluatorFromResolvedCast - cast: " << cast->DebugString();
   if (cast->extended_cast() != nullptr) {
     std::vector<ConversionEvaluator> evaluators;
     for (const auto& extended_conversion :
@@ -275,6 +277,7 @@ absl::StatusOr<std::unique_ptr<ValueExpr>> Algebrizer::AlgebrizeCast(
   // implementation are tested in public/types/extended_type_test.cc.
   std::unique_ptr<ExtendedCompositeCastEvaluator> extended_evaluator =
       GetExtendedCastEvaluatorFromResolvedCast(cast);
+  ABSL_LOG(ERROR) << "my test - Algebrizer::AlgebrizeCast - just got extended_evaluator == null: " << (extended_evaluator == nullptr);
   ZETASQL_ASSIGN_OR_RETURN(std::unique_ptr<ValueExpr> function_call,
                    BuiltinScalarFunction::CreateCast(
                        language_options_, cast->type(), std::move(arg),
